@@ -8,9 +8,10 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { Todo } from '../App';
+import Deadline from './Deadline';
 
 type TodoListItemProps = {
-  index:string | number
+  index:number
   todo: Todo; 
   onEdit: () => void;
   onDelete: () => void;
@@ -21,7 +22,7 @@ const TodoListItem = ({
   todo,
   onEdit,
   onDelete
-}) => {
+}:TodoListItemProps) => {
   return (
     <div className='Todos_Rendering'>
       <p 
@@ -46,6 +47,7 @@ const TodoListItem = ({
             削除 &nbsp;
             <DeleteOutlineIcon/>
         </Button>
+        <Deadline/>
       </div>
       <span>{todo.timeF}</span>
     </div> 

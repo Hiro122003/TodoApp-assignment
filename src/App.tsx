@@ -40,8 +40,12 @@ function App() {
   //useEffectを使用して初回レンダリング時にfirestoreのデータの取得・表示
   useEffect(() => {
     const todoCollection = collection(db, 'TodoApp');
-  
+
+  // -------------------------------------------------------------
     // onSnapshot を使用してデータベースの変更をリアルタイムで監視
+    // // 最初の引数 (クエリオブジェクト): この引数は、Firestore データベースのどのデータを監視するかを指定するクエリオブジェクトです。
+    // 2番目の引数 (コールバック関数): この引数は、指定されたクエリの結果に対してデータが変更されたときに呼び出されるコールバック関数です。この関数は QuerySnapshot オブジェクトを受け取り、その中にはクエリの結果として得られたドキュメントのセットが含まれています。
+    // --------------------------------------------------
     const unsubscribe = onSnapshot(query(todoCollection,orderBy('SERVERTIMESTAMP','desc')), (snapshot) => {
       const todoData = snapshot.docs.map(doc => ({
         keyF: doc.id,
