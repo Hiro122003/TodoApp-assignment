@@ -5,28 +5,17 @@ import Update from './Update';
 import Paper from '@mui/material/Paper';
 
 // typescriptのtodoの型
-import { Todo } from '../App';
+import { Todo } from '../TodoContext';
+
+import {useContext,useState} from 'react'
+import { TodoContext } from '../TodoContext';
+
+const TodoList = () => {
+  const todoContext = useContext(TodoContext);
+  const {todos,editingId} = todoContext;
 
 
-type TodoListProps = {
-  todos:Todo[];
-  editingId: string|null;
-  setEditingId:(keyF: string | null)=>void;
-  updateText: string;
-  setUpdateText: (text: string) => void;
-  updateTodo: (keyF: string) => void;
-  deleteTodo: (keyF: string) => void;
-}
-
-const TodoList = ({
-  todos,
-  editingId,
-  setEditingId,
-  updateText,
-  setUpdateText,
-  updateTodo,//Update関数
-  deleteTodo//Delete
-}) => {
+  
   return (
     <div>
       {todos.map((todo:Todo,i:number)=>(
@@ -35,20 +24,12 @@ const TodoList = ({
             <Update
               key={todo.keyF}
               todo = {todo}
-              updateText={updateText}
-              setUpdateText={setUpdateText}
-              onUpdate={() => updateTodo(todo.keyF)}
             />
           ):(
             <TodoListItem 
               index = {i}
               key={todo.keyF}
               todo={todo}
-              onEdit={() => {
-                setEditingId(todo.keyF);
-                setUpdateText(todo.todoF);
-              }}
-              onDelete={() => deleteTodo(todo.keyF)}
             />
           )}
         </Paper>

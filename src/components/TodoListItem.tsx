@@ -1,4 +1,3 @@
-
 //MUI 
 import Button from '@mui/material/Button';
 
@@ -6,26 +5,31 @@ import Button from '@mui/material/Button';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-import { Todo } from '../App';
+import { Todo, TodoContext } from '../TodoContext';
 import Deadline from './Deadline';
+
+import {useContext} from 'react'
 
 type TodoListItemProps = {
   index:number
   todo: Todo; 
-  onEdit: () => void;
-  onDelete: () => void;
 };
 
 const TodoListItem = ({
   index,
   todo,
-  onEdit,
-  onDelete
 }:TodoListItemProps) => {
+
+  const todoContext = useContext(TodoContext)
+  const {setEditingId,setUpdateText,deleteTodo} = todoContext;
+
   return (
     <div className='Todos_Rendering'>
       <p 
-        onClick={onEdit}>
+        onClick={() => {
+          setEditingId(todo.keyF);
+          setUpdateText(todo.todoF);
+        }}>
         {index + 1} &nbsp;&nbsp;&nbsp;{todo.todoF}
       </p>
       <div>
@@ -33,7 +37,10 @@ const TodoListItem = ({
         <Button 
         variant='contained'
         color='primary' 
-        onClick={onEdit}>
+        onClick={() => {
+          setEditingId(todo.keyF);
+          setUpdateText(todo.todoF);
+        }}>
           編集 &nbsp;
           <ModeEditIcon/>
         </Button>
@@ -42,7 +49,7 @@ const TodoListItem = ({
         <Button 
           variant='contained' 
           color='primary' 
-          onClick={onDelete}>
+          onClick={() => deleteTodo(todo.keyF)}>
             削除 &nbsp;
             <DeleteOutlineIcon/>
         </Button>

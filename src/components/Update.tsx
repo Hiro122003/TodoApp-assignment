@@ -1,5 +1,3 @@
-
-
 //MUI 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -7,21 +5,20 @@ import TextField from '@mui/material/TextField';
 //MUI Icon
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { Todo } from '../App';
+import { Todo, TodoContext } from '../TodoContext';
+
+import {useState,useContext} from 'react'
 
 type UpdateProps = {
   todo:Todo;
-  updateText:string;
-  setUpdateText:(text:string)=>void;
-  onUpdate:()=>void
 }
 
-const Update:React.FC<UpdateProps> = ({
-  todo,
-  updateText,
-  setUpdateText,
-  onUpdate
-}) => {
+const Update:React.FC<UpdateProps> = ({todo}) => {
+  const [editing,setEditing] = useState<boolean>(false);//TodoList
+
+  const todoContext = useContext(TodoContext);
+  const {updateText,setUpdateText,updateTodo} = todoContext;
+
   return (
     <div className='Update_Rendering' key={todo.keyF}>
       <TextField
@@ -35,7 +32,7 @@ const Update:React.FC<UpdateProps> = ({
           }
         }}
       />
-      <Button variant='contained' color='primary'onClick={onUpdate}>更新 &nbsp;<UpdateIcon/></Button>
+      <Button variant='contained' color='primary'onClick={() => updateTodo(todo.keyF)}>更新 &nbsp;<UpdateIcon/></Button>
     </div>
   )
 }
