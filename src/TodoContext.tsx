@@ -3,7 +3,7 @@ import { createContext } from 'react';
 
 import { db } from './firebase';
 import 'firebase/firestore'; // Firestore モジュールをインポート;
-import { getDocs, orderBy, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { Timestamp, getDocs, orderBy, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { doc, addDoc, collection, deleteDoc ,getDoc,onSnapshot,query,getFirestore,writeBatch } from 'firebase/firestore';
 
 export type Todo = {
@@ -12,6 +12,7 @@ export type Todo = {
   timeF:string;
   editing:boolean
   completed:boolean;
+  deadline:Date|null;
 }
 
 type TodoContextProps = {
@@ -24,6 +25,11 @@ type TodoContextProps = {
   setEditingId:(keyF:string)=>void;
   updateText:string;
   setUpdateText:(text:string)=>void
+  deadline:Date|null;
+  setDeadline:(date:Date)=>void
+  updateTodoDeadline:(keyF:string,newDeadline:Timestamp)=>void;
+  completedTodo:(keyF:string)=>void
+  completed:boolean;
 }
 
 export const TodoContext = createContext<TodoContextProps|null>(null);
@@ -33,6 +39,8 @@ export const TodoProvider = ({children}) => {
   const [todos,setTodos]  = useState<Todo[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null)
   const [updateText,setUpdateText] = useState<string>(''); //update
+  const [deadline,setDeadline] = useState<Date|null>(null);
+  const [completed,setCompleted] = useState<boolean>(false)
   
  ;//TodoList
 
@@ -52,7 +60,8 @@ export const TodoProvider = ({children}) => {
         todoF: doc.data().TODO,
         timeF: doc.data().Time,
         editing: doc.data().editing, 
-        completed : doc.data().completed
+        completed : doc.data().completed,
+        deadline:doc.data().deadline
       }));
       setTodos(todoData);
     });
@@ -79,10 +88,11 @@ export const TodoProvider = ({children}) => {
         SERVERTIMESTAMP:serverTimestamp(),
         editing:false,
         completed:false,
+        deadline:deadline
       })
   
       // setText('')=>Formコンポーネントで実装
-      alert('Todoリストが追加されました!!')
+      // alert('Todoリストが追加されました!!')
     }catch(error){
       alert(error.message)
     }
@@ -96,7 +106,7 @@ export const TodoProvider = ({children}) => {
         await updateDoc(todoDocRef,{
           TODO:updateText
         });
-        alert('指定のTodoが更新されました。')
+        // alert('指定のTodoが更新されました。')
         setUpdateText('')
         setEditingId(null)
       }catch(error){
@@ -107,33 +117,59 @@ export const TodoProvider = ({children}) => {
   
     // Delete　削除
     const deleteTodo = async(KeyF:string) => {
-      try{
-        const todoDocRef = doc(db,'TodoApp',KeyF);
-        await deleteDoc(todoDocRef);
-        alert('指定のリストが削除されました。')
-      }catch(error){
-        alert('指定のTodoリストの削除に失敗しました。')
+      const confirmDelete = window.confirm('本当に削除しますか？');
+      if(confirmDelete){
+        try{
+          const todoDocRef = doc(db,'TodoApp',KeyF);
+          await deleteDoc(todoDocRef);
+          // alert('指定のリストが削除されました。')
+        }catch(error){
+          alert('指定のTodoリストの削除に失敗しました。')
+        }
       }
+      else return 
     }
   
   
     // DeleteAll　すべてのTodoリストを削除
     const deleteAlltodo = async () => {
-      try {
-        const todoCollection = collection(db, 'TodoApp');
-        const todosSnapshot = await getDocs(todoCollection);
-        const batch = writeBatch(db);
-    
-        todosSnapshot.forEach((doc) => {
-          batch.delete(doc.ref);
-        });
-    
-        await batch.commit();
-        alert('すべてのTodoリストが削除されました。');
-      } catch (error) {
-        alert('Todoリストの削除に失敗しました。');
+      const confirmAllDelete = window.confirm('本当にすべて削除しますか？');
+      if(confirmAllDelete){
+        try {
+          const todoCollection = collection(db, 'TodoApp');
+          const todosSnapshot = await getDocs(todoCollection);
+          const batch = writeBatch(db);
+      
+          todosSnapshot.forEach((doc) => {
+            batch.delete(doc.ref);
+          });
+      
+          await batch.commit();
+          // alert('すべてのTodoリストが削除されました。');
+        } catch (error) {
+          alert('Todoリストの削除に失敗しました。');
+        }
       }
+      else return
     }
+
+    const updateTodoDeadline = async(
+      keyF:string,
+      newDeadline:Timestamp) => {
+        const deadLineRef = doc(db,'TodoApp',keyF);
+        await updateDoc(deadLineRef,{
+          deadline:newDeadline 
+        })
+    };
+
+    const completedTodo = async(keyF:string) => {
+      setCompleted(prev=>!prev)
+      const completedRef = doc(db,'TodoApp',keyF);
+      await updateDoc(completedRef,{
+        completed:completed
+      })
+    }
+
     const value = {
       todos,
       addTodo,
@@ -143,7 +179,12 @@ export const TodoProvider = ({children}) => {
       editingId,
       setEditingId,
       updateText,
-      setUpdateText
+      setUpdateText,
+      deadline,
+      setDeadline,
+      updateTodoDeadline,
+      completedTodo,
+      completed
     };
     
     return <TodoContext.Provider value = {value}>

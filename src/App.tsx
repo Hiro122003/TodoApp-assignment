@@ -13,7 +13,7 @@ function App() {
 
   return (
     <TodoProvider>
-      <div>
+      <div className='example'>
         <Title/>
         <Form/>
         <TodoList />

@@ -20,7 +20,7 @@ const Form = () => {
   const [text,setText]  = useState<string>('');
 
   const todoContext = useContext(TodoContext);
-  const {addTodo,deleteAlltodo} = todoContext;
+  const {addTodo,deleteAlltodo,todos} = todoContext;
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +42,7 @@ const Form = () => {
             {/* Add function  */}
             <Button type = 'submit' variant='contained' color='primary'  disabled={!text}>追加 &nbsp;<AddBoxIcon/></Button>
             {/* Delete All fucntion */}
-            <Button variant='contained' color='primary' onClick={deleteAlltodo}>すべて削除 All &nbsp;<DeleteOutlineIcon/></Button>
+            <Button variant='contained' color='primary' onClick={deleteAlltodo} disabled={todos.length===0}>すべて削除 &nbsp;<DeleteOutlineIcon/></Button>
         </Paper>
       </form>
   )

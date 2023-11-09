@@ -16,57 +16,109 @@
   box-shadow: 0px 2px 5px gray;
 }
 
+@media(max-width:768px){
+  .example{
+    background-color: aqua;
+  }
+}
+/*
+@media (max-width: 768px) {
+  .Todos_Rendering,
+  .Update_Rendering {
+    flex-direction: column;
+    background-color: lightblue;
+  }
+
+  .Todos_Rendering > div >Button,
+  .Update_Rendering > Button{
+    width: auto;
+    margin:5px 0;
+  }
+
+  .Update_Rendering > .Text_Field{
+    font-size: 0.9rem;
+  }
+
+  .Todos_Rendering > p{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    word-break: break-all;
+    width: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .Todos_textWithDate{
+    display: flex;
+    justify-content: center;
+  }
+}
+*/
+
 .Add_Todo{
   margin: 20px 15px 22px 15px;
   padding: 15px 0px 15px 0px;
 }
 
 .Add_Todo >.Text_Field{
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .Add_Todo > Button {
-  width: 20%;
+  width: auto;
   margin: 5px;
 }
 
-.Todos_Rendering {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 20px 150px 20px 150px;
-  padding: 10px;
-}
-
 .Update_Rendering{
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.0fr auto 0.1fr;
+  justify-items: space-around;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-
-
-.Todos_Rendering > p {
-  font-family: ubuntu;
-  font-weight: bold;
+.Todos_Rendering {
+  display: grid;
+  grid-template-columns:1.5fr 1.5fr auto;
+  grid-template-rows: auto auto;
+  gap: 10px;
   align-items: center;
+  margin-bottom: 10px;
+}
+
+.Todos_textWithDate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 0; /* 子要素が親要素の幅を超えて伸びるのを防ぐ */
+  margin-left: 15px;
+}
+
+.Todos_textWithDate > p {
+  margin-right: 10px;
+  min-width: 0; /* 子要素が親要素の幅を超えて伸びるのを防ぐ */
+  max-width: 100%; /* 親要素の幅を超えない */
+  text-align: center;
+  font-weight: 600;
+  width: auto;
+}
+
+.Todos_textWithDate > span {
+  text-align: start;
+  padding-left: 10px;
+  font-size: 0.7rem;
+  position: relative;
+  top: 5px;
 }
 
 .Todos_Rendering > div > Button {
   width: 150px;
   margin: 5px;
-  align-items: right;
-}
-
-
-.Todos_Rendering > span {
-  font-size: 10px;
-  position: absolute;
-  left: 190px;
-  padding-top: 50px;
-  font-family: Ubuntu;
-  font-weight: 500;
-  text-shadow: 0.1px 0.8px black;
+  width: auto; /* 小さい画面ではボタンの幅を自動調整 */
 }
 
 .datePicker{
