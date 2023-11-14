@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState,useContext} from 'react'
 
 //MUI 
 import Button from '@mui/material/Button';
@@ -8,6 +8,7 @@ import Paper from '@mui/material/Paper';
 //MUI Icon
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { TodoContext } from '../TodoContext';
 
 // typescript propsの型を宣言
 type FormProps = {
@@ -15,12 +16,15 @@ type FormProps = {
   deleteAll:() => void;
 }
 
-const Form:React.FC<FormProps> = ({add,deleteAll}) => {
+const Form = () => {
   const [text,setText]  = useState<string>('');
+
+  const todoContext = useContext(TodoContext);
+  const {addTodo,deleteAlltodo,todos} = todoContext;
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    add(text);
+    addTodo(text);
     setText('')
   }
 
@@ -38,7 +42,7 @@ const Form:React.FC<FormProps> = ({add,deleteAll}) => {
             {/* Add function  */}
             <Button type = 'submit' variant='contained' color='primary'  disabled={!text}>追加 &nbsp;<AddBoxIcon/></Button>
             {/* Delete All fucntion */}
-            <Button variant='contained' color='primary' onClick={deleteAll}>すべて削除 All &nbsp;<DeleteOutlineIcon/></Button>
+            <Button variant='contained' color='primary' onClick={deleteAlltodo} disabled={todos.length===0}>すべて削除 &nbsp;<DeleteOutlineIcon/></Button>
         </Paper>
       </form>
   )
