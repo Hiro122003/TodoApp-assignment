@@ -2,7 +2,7 @@ import {useState,useEffect,useContext} from 'react'
 import { createContext } from 'react';
 
 import { db } from './firebase';
-import 'firebase/firestore'; // Firestore モジュールをインポート;
+import 'firebase/firestore'; 
 import { Timestamp, getDocs, orderBy, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { doc, addDoc, collection, deleteDoc ,getDoc,onSnapshot,query,getFirestore,writeBatch } from 'firebase/firestore';
 
@@ -35,14 +35,14 @@ type TodoContextProps = {
 export const TodoContext = createContext<TodoContextProps|null>(null);
 
 export const TodoProvider = ({children}) => {
-  // useState
+  
   const [todos,setTodos]  = useState<Todo[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null)
   const [updateText,setUpdateText] = useState<string>(''); //update
   const [deadline,setDeadline] = useState<Date|null>(null);
-  const [completed,setCompleted] = useState<boolean>(false)
+  const [completed,setCompleted] = useState<boolean>(false);
   
- ;//TodoList
+
 
 
   //useEffectを使用して初回レンダリング時にfirestoreのデータの取得・表示

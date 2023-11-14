@@ -32,7 +32,7 @@ const TodoList = () => {
         disabled = {todos.length===0}
         style={{marginBottom:'10px'}}
       >
-        {showCompleted ? 'すべてのタスクを表示する': todos.length===0 ? 'タスクはありません':'未完了のタスクを表示'}
+        {showCompleted ? 'すべてのタスクを表示する': todos.length===0 ? 'タスクはありません':'未完了のタスクを表示する'}
       </Button>
       {filteredTodos.map((todo:Todo,i:number)=>(
         <Paper 

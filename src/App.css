@@ -55,6 +55,9 @@
   }
 }
 */
+.Todo_Header {
+  font-size: clamp(20px, 4vw, 35px); /* ビューポート幅の5%としてフォントサイズを指定し、18pxから35pxの範囲に収める */
+}
 
 .Add_Todo{
   margin: 20px 15px 22px 15px;
@@ -105,6 +108,7 @@
   text-align: center;
   font-weight: 600;
   width: auto;
+  font-size: clamp(10px,4vw,16px);
 }
 
 .Todos_textWithDate > span {
